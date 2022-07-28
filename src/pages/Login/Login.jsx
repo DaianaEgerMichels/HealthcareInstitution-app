@@ -24,13 +24,13 @@ export default function Login() {
           console.log(response.data);
           navigate("/home");
         })
-        .catch((erro) => messageError(erro.response.data));
+        .catch((erro) => messageError(erro.response.data.messages));
     } catch (error) {
       messageError(error);
     }
   };
 
-  const handleClick = (e) => {
+  const handleSignUp = (e) => {
     e.preventDefault();
     navigate("/register-institution");
   };
@@ -68,7 +68,7 @@ export default function Login() {
                     <button onClick={login} className="btn btn-success">
                       Login
                     </button>
-                    <button onClick={handleClick} className="btn btn-primary">
+                    <button onClick={handleSignUp} className="btn btn-primary">
                       Register
                     </button>
                   </fieldset>
