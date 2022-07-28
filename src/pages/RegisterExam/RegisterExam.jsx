@@ -8,11 +8,13 @@ import {
   messageError,
   messageSuccess,
 } from "../../components/Toastr/toastr.js";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import api from "../../utils/api";
 
 function RegisterExam() {
   const navigate = useNavigate();
+  const params = useParams();
+
   const [institutionId, setInstitutionId] = useState(0);
   const [patientName, setPatientName] = useState("");
   const [patientAge, setPatientAge] = useState(0);
@@ -77,7 +79,7 @@ function RegisterExam() {
           messageSuccess("Exam registered successfully!");
           navigate("/exams");
         })
-        .catch((erro) => messageError(erro.response.data));
+        .catch((erro) => messageError(erro.response.data.messages));
     } catch (error) {
       messageError(error);
     }

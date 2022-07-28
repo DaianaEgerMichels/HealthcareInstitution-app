@@ -2,15 +2,17 @@ import {React, useEffect} from "react";
 import Card from "../../components/Card/Card";
 import Navbar from "../../components/Navbar/Navbar";
 import { MdEdit, MdDelete } from "react-icons/md";
-import {IoMdEye} from "react-icons/io"
+import {IoMdEye} from "react-icons/io";
+import {RiHealthBookLine} from "react-icons/ri";
 import { useState } from "react";
 import * as mensagens from "../../components/Toastr/toastr.js";
 import Swal from "sweetalert2";
 import api from "../../utils/api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 function ConsultExams() {
   const navigate = useNavigate();
+  const params = useParams();
 
   const [deleteMessage, setDeleteMessage] = useState(false);
   const [exams, setExams] = useState([]);
@@ -31,8 +33,11 @@ function ConsultExams() {
         api
           .get(`/api/exams/all/${institutionLogged.id}`)
           .then((response) => {
+            if(response.data == []){
+              mensagens.messageAlert("There are no exams registered yet!")
+              navigate("/home")
+            }
             setExams(response.data);
-            console.log(exams);
           })
           .catch(() =>
             mensagens.messageAlert("There was a problem fetching the exams!")
@@ -43,11 +48,11 @@ function ConsultExams() {
     }, [deleteMessage]); 
 
   const handleEdit = (idExam) => {
-    console.log(idExam);
+    navigate(`/register-exam/${idExam}`)
   };
 
   const handleViewExam = (idExam) => {
-    console.log(idExam);
+    navigate(`/exams/${idExam}`)
   };
 
   const handleDelete = (idExam) => {
@@ -64,7 +69,7 @@ function ConsultExams() {
         if (result.isConfirmed) {
           setDeleteMessage(true);
           if (idExam) {
-            api.delete(`http://localhost:8080/api/exams/${idExam}`);
+            api.delete(`/api/exams/${idExam}`, {params: {id_institution:institutionLogged.id}});
           }
           Swal.fire("Deleted!", "Exam deleted successfully!", "success");
         }
@@ -86,7 +91,7 @@ function ConsultExams() {
                   onClick={handleRegisterExam}
                   className="btn btn-success"
                 >
-                  Register New Exam
+                  Register New Exam <RiHealthBookLine size={24}/>
                 </button>
               </div>
             </div>
@@ -120,23 +125,23 @@ function ConsultExams() {
                             className="btn btn-primary"
                           >
                             <abbr title="Edit">
-                              <MdEdit />
+                              <MdEdit size={20}/>
                             </abbr>
                           </button>
                           <button
                             onClick={(id) => handleViewExam(exam.id)}
-                            className="btn btn-success"
+                            className="btn btn-info"
                           >
                             <abbr title="View Exam">
-                              <IoMdEye />
+                              <IoMdEye size={20}/>
                             </abbr>
                           </button>
                           <button
                             onClick={(id) => handleDelete(exam.id)}
-                            className="btn btn-warning"
+                            className="btn btn-danger"
                           >
                             <abbr title="Delete">
-                              <MdDelete />
+                              <MdDelete size={20}/>
                             </abbr>
                           </button>
                         </td>
