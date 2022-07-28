@@ -4,7 +4,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import { MdEdit, MdDelete } from "react-icons/md";
 import {RiHealthBookLine} from "react-icons/ri";
 import { useState } from "react";
-import * as mensagens from "../../components/Toastr/toastr.js";
+import * as messages from "../../components/Toastr/toastr.js";
 import Swal from "sweetalert2";
 import api from "../../utils/api";
 import { useNavigate, useParams } from "react-router-dom";
@@ -30,23 +30,9 @@ function ViewExam() {
     const institutionLoggedString = localStorage.getItem("_institution_logged");
     const institutionLogged = JSON.parse(institutionLoggedString);
 
-    if (institutionLogged.id == null) {
-      mensagens.messageError("There was an error fetching the exams");
+    if (institutionLogged.id == null || institutionLogged.id == 0) {
+      messages.messageError("There was an error fetching the exams");
     }
-
-    /*
-    useEffect(() => {
-    if (parans.id) {
-      api.get(`http://localhost:8081/produto/${parans.id}`).then((response) => {
-        setUrlFoto(response.data.urlFoto);
-        setNome(response.data.nome);
-        setPrecoSugerido(response.data.precoSugerido);
-        setDescricao(response.data.descricao);
-        setStatus(response.data.isAtivo);
-      });
-    }
-  }, [parans]);
-    */
 
   useEffect(() => {
     try {
@@ -55,7 +41,7 @@ function ViewExam() {
         .get(`/api/exams/${params.id}`, {params: {id_institution: institutionLogged.id}})
         .then((response) => {
           if(!response){
-            mensagens.messageAlert("There are no exams registered yet!")
+            messages.messageAlert("There are no exams registered yet!")
             navigate("/home")
           }
         let result = response.data;
@@ -68,10 +54,10 @@ function ViewExam() {
         setProcedureName(result.procedureName);
     })
         .catch(() =>
-          mensagens.messageAlert("There was a problem fetching the exams!")
+          messages.messageAlert("There was a problem fetching the exams!")
         );}
     } catch (error) {
-      mensagens.messageError(error);
+      messages.messageError(error);
     }
   }, [params]); 
 
@@ -101,7 +87,7 @@ function ViewExam() {
         }
       })
       .catch(() =>
-        mensagens.messageAlert("There was a problem deleting the exam!")
+        messages.messageAlert("There was a problem deleting the exam!")
       );
   };
 

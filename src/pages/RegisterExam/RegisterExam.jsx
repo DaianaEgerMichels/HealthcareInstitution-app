@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Card from "../../components/Card/Card";
 import Navbar from "../../components/Navbar/Navbar";
 import FormGroup from "../../components/FormGroup/FormGroup";
@@ -7,6 +7,7 @@ import SelectMenu from "../../components/SelectMenu/SelectMenu";
 import {
   messageError,
   messageSuccess,
+  messageAlert
 } from "../../components/Toastr/toastr.js";
 import { useNavigate, useParams } from "react-router";
 import api from "../../utils/api";
@@ -15,7 +16,7 @@ function RegisterExam() {
   const navigate = useNavigate();
   const params = useParams();
 
-  const [institutionId, setInstitutionId] = useState(0);
+  const [examId, setExamId] = useState(0);
   const [patientName, setPatientName] = useState("");
   const [patientAge, setPatientAge] = useState(0);
   const [patientGender, setPatientGender] = useState("");
@@ -48,7 +49,7 @@ function RegisterExam() {
     return messages;
   };
 
-  const handleSaveExam = (e) => {
+  const handleSaveExam = (e, institutionLogged) => {
     e.preventDefault();
     const messages = validateFields();
 
@@ -64,10 +65,29 @@ function RegisterExam() {
         "_institution_logged"
       );
       const institutionLogged = JSON.parse(instituionLoggedString);
-      setInstitutionId(institutionLogged.id);
-      api
+      console.log(institutionLogged);
+      if (institutionLogged.id == null || institutionLogged.id == 0) {
+        messageError("There was an error fetching the exams");
+        navigate("/home")
+      }
+      if(params.id){
+        api.put(`/api/exams/${params.id}`, {institutionId: institutionLogged.id,
+          patientName: patientName,
+          patientAge: patientAge,
+          patientGender: patientGender,
+          physicianName: physicianName,
+          physicianCRM: physicianCRM,
+          procedureName: procedureName,}).then(() => {
+            messageSuccess("Exam update successfully!");
+          navigate("/exams");
+          })
+          .catch((erro) => {
+             messageError(erro.response.data.messages);
+          });
+      } else {
+        api
         .post("/api/exams", {
-          institutionId: institutionId,
+          institutionId: institutionLogged.id,
           patientName: patientName,
           patientAge: patientAge,
           patientGender: patientGender,
@@ -80,10 +100,47 @@ function RegisterExam() {
           navigate("/exams");
         })
         .catch((erro) => messageError(erro.response.data.messages));
+      }
+      
     } catch (error) {
       messageError(error);
     }
   };
+
+  const institutionLoggedString = localStorage.getItem("_institution_logged");
+  const institutionLogged = JSON.parse(institutionLoggedString);
+
+    if (institutionLogged.id == null || institutionLogged.id == 0) {
+      messageError("There was an error fetching the exams");
+    }
+
+  useEffect(() => {
+    try {
+        if(params.id){         
+      api
+        .get(`/api/exams/${params.id}`, {params: {id_institution: institutionLogged.id}})
+        .then((response) => {
+          if(!response){
+            messageAlert("There are no exams registered yet!")
+            navigate("/home")
+          }
+        let result = response.data;
+        setExamId(result.id);
+        setPatientName(result.patientName);
+        setPatientAge(result.patientAge);
+        setPatientGender(result.patientGender);
+        setPhysicianName(result.physicianName);
+        setPhysicianCRM(result.physicianCRM);
+        setProcedureName(result.procedureName);
+    })
+        .catch((erro) =>{
+          messageAlert("There was a problem fetching the exams!");
+          messageError(erro.response.data.messages);}
+        );}
+    } catch (error) {
+      messageError(error);
+    }
+  }, [params]); 
 
   const handleCancel = (e) => {
     e.preventDefault();
@@ -94,7 +151,7 @@ function RegisterExam() {
     <>
       <Navbar />
       <div className="container">
-      <Card title="Exam Registration">
+      <Card title={params.id ? "Edit Exam": "Exam Registration"}>
         <div className="row">
           <div className="col-md-12">
             <FormGroup id="inputPatientName" label="Patient Name: *">
@@ -180,7 +237,7 @@ function RegisterExam() {
         <div className="row">
           <div className="col-md-6">
             <button onClick={handleSaveExam} className="btn btn-success">
-              Save
+            {params.id ? "Update": "Save"}
             </button>
             <button onClick={handleCancel} className="btn btn-primary">
               Cancel
