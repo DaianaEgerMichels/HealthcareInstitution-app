@@ -1,6 +1,7 @@
 import React from "react";
 import NavbarItem from "../NavbarItem/NavbarItem";
 import {IoLogOutOutline} from 'react-icons/io5';
+import {RiMentalHealthFill} from "react-icons/ri";
 import { useNavigate } from "react-router";
 
 function Navbar() {
@@ -9,23 +10,13 @@ function Navbar() {
     <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
       <div className="container-fluid">
         <a className="navbar-brand" href="/home">
-          Healthcare System
+         Health System <RiMentalHealthFill size={28}/>
         </a>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarColor01"
-          aria-controls="navbarColor01"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-
         <div className="collapse navbar-collapse" id="navbarColor01">
           <ul className="navbar-nav me-auto">
+            <NavbarItem label="Home" href="/home"/>
             <NavbarItem label="Exams" href="/exams"/>
+            <NavbarItem label="Register" href="/register-exam"/>
           </ul>
         <button className="btn btn-primary my-2 my-sm-0" onClick={()=> navigate('/')}><IoLogOutOutline size={26}/></button>
         </div>

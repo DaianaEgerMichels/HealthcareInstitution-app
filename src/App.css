@@ -9,6 +9,28 @@ body{padding-top:0}pre{background:#f7f7f9}@media (min-width: 768px){body>.navbar
     margin-bottom: 2.5em;
 }
 
+.container-fluid{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
 .login-container, .signup-container{
     margin: 6.5em;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 2em;
+    font-family: 'Rochester', cursive;
+}
+
+*{
+    font-family: 'Poppins', sans-serif;
+}
+
+td > button{
+    margin-bottom: 0.5em;
 }
