@@ -16,7 +16,6 @@ function RegisterExam() {
   const navigate = useNavigate();
   const params = useParams();
 
-  const [examId, setExamId] = useState(0);
   const [patientName, setPatientName] = useState("");
   const [patientAge, setPatientAge] = useState(0);
   const [patientGender, setPatientGender] = useState("");
@@ -65,8 +64,7 @@ function RegisterExam() {
         "_institution_logged"
       );
       const institutionLogged = JSON.parse(instituionLoggedString);
-      console.log(institutionLogged);
-      if (institutionLogged.id == null || institutionLogged.id == 0) {
+      if (institutionLogged.id === null || institutionLogged.id === 0) {
         messageError("There was an error fetching the exams");
         navigate("/home")
       }
@@ -110,7 +108,7 @@ function RegisterExam() {
   const institutionLoggedString = localStorage.getItem("_institution_logged");
   const institutionLogged = JSON.parse(institutionLoggedString);
 
-    if (institutionLogged.id == null || institutionLogged.id == 0) {
+    if (institutionLogged.id === null || institutionLogged.id === 0) {
       messageError("There was an error fetching the exams");
     }
 
@@ -125,7 +123,6 @@ function RegisterExam() {
             navigate("/home")
           }
         let result = response.data;
-        setExamId(result.id);
         setPatientName(result.patientName);
         setPatientAge(result.patientAge);
         setPatientGender(result.patientGender);
@@ -140,7 +137,7 @@ function RegisterExam() {
     } catch (error) {
       messageError(error);
     }
-  }, [params]); 
+  }, [params, institutionLogged.id, navigate]); 
 
   const handleCancel = (e) => {
     e.preventDefault();

@@ -11,9 +11,8 @@ function Home() {
       const institutionLogged = JSON.parse(institutionLoggedString)
       api.get(`/api/healthcare-institutions/${institutionLogged.id}`
     ).then(response => {
-      setBalance(response.data.pixeonCoins)
-    }).
-    catch(erro =>
+      setBalance(response.data.pixeonCoins);
+    }).catch(erro =>
       console.log(erro.response)
     )
   }, [balance]);

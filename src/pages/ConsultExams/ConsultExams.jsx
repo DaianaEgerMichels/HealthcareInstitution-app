@@ -8,13 +8,11 @@ import { useState } from "react";
 import * as mensagens from "../../components/Toastr/toastr.js";
 import Swal from "sweetalert2";
 import api from "../../utils/api";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function ConsultExams() {
   const navigate = useNavigate();
-  const params = useParams();
 
-  const [deleteMessage, setDeleteMessage] = useState(false);
   const [exams, setExams] = useState([]);
 
   const handleRegisterExam = () => {
@@ -33,7 +31,7 @@ function ConsultExams() {
         api
           .get(`/api/exams/all/${institutionLogged.id}`)
           .then((response) => {
-            if(response.data == []){
+            if(response.data === []){
               mensagens.messageAlert("There are no exams registered yet!")
               navigate("/home")
             }
@@ -45,7 +43,7 @@ function ConsultExams() {
       } catch (error) {
         mensagens.messageError(error);
       }
-    }, [deleteMessage]); 
+    }, [institutionLogged.id, navigate]); 
 
   const handleEdit = (idExam) => {
     navigate(`/register-exam/${idExam}`)
@@ -67,7 +65,6 @@ function ConsultExams() {
     })
       .then((result) => {
         if (result.isConfirmed) {
-          setDeleteMessage(true);
           if (idExam) {
             api.delete(`/api/exams/${idExam}`, {params: {id_institution:institutionLogged.id}});
           }

@@ -13,7 +13,6 @@ function ViewExam() {
   const navigate = useNavigate();
   const params = useParams();
 
-  const [deleteMessage, setDeleteMessage] = useState(false);
   const [examId, setExamId] = useState(0);
   const [patientName, setPatientName] = useState("");
   const [patientAge, setPatientAge] = useState(0);
@@ -30,7 +29,7 @@ function ViewExam() {
     const institutionLoggedString = localStorage.getItem("_institution_logged");
     const institutionLogged = JSON.parse(institutionLoggedString);
 
-    if (institutionLogged.id == null || institutionLogged.id == 0) {
+    if (institutionLogged.id === null || institutionLogged.id === 0) {
       messages.messageError("There was an error fetching the exams");
     }
 
@@ -59,7 +58,7 @@ function ViewExam() {
     } catch (error) {
       messages.messageError(error);
     }
-  }, [params]); 
+  }, [params, institutionLogged.id, navigate]); 
 
 
   const handleEdit = (idExam) => {
@@ -78,7 +77,6 @@ function ViewExam() {
     })
       .then((result) => {
         if (result.isConfirmed) {
-          setDeleteMessage(true);
           if (idExam) {
             api.delete(`/api/exams/${idExam}`,{params: {id_institution: institutionLogged.id}});
           }
