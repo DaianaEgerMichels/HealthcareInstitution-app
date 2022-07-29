@@ -1,4 +1,4 @@
-<h1 align="center">REACT - BOOTSTRAP - JS</h1>
+<h1 align="center">REACT - BOOTSWATCH - JS</h1>
 <p align="center">
  HEALTH SYSTEM
 </p>
