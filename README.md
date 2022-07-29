@@ -1,7 +1,11 @@
-<h1 align="center">REACT - BOOTSTRAP - JS</h1>
+<h1 align="center">REACT - BOOTSWATCH - JS</h1>
+<p align="center">
+ HEALTH SYSTEM
+</p>
+
 
 <p align="center">
-FRONTEND: desenvolvimento de app para a aplicação de finanças do curso de Spring Boot + React JS da Udemy.
+FRONTEND: front-end application development for health system for registration and exam management.
 </p>
 
 <p align="center">
