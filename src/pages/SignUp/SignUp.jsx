@@ -54,7 +54,8 @@ function SignUp() {
           );
           navigate("/");
         })
-        .catch((erro) => messageError(erro.response.data));
+        .catch((erro) => {messageError(erro.response.data.messages)
+        console.log(erro.response.data.messages)});
     } catch (error) {
       messageError(error);
     }

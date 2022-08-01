@@ -13,7 +13,7 @@ function Home() {
       .then((response) => {
         setBalance(response.data.pixeonCoins);
       })
-      .catch((erro) => alert(erro.response));
+      .catch((erro) => alert(erro.response.data.messages));
   }, [balance]);
   return (
     <>
