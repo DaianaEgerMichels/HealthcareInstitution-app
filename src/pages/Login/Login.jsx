@@ -24,7 +24,7 @@ export default function Login() {
           console.log(response.data);
           navigate("/home");
         })
-        .catch((erro) => messageError(erro.response.data.messages));
+        .catch((erro) => {messageError(erro.response.data.messages)});
     } catch (error) {
       messageError(error);
     }
