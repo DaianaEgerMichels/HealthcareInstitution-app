@@ -9,10 +9,6 @@ FRONTEND: front-end application development for health system for registration a
 </p>
 
 <p align="center">
-<img src="http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=GREEN&style=for-the-badge"/>
-</p>
-
-<p align="center">
 <span>Page Login</span>
 <img src="./src/images/login.png" alt="Page Login"/>
 </p>
